@@ -1,0 +1,54 @@
+{
+  "name": "gen-pdf-mcp-server",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server for Gen-PDF that enables LLMs to generate professional PDF documents from markdown content. Provides real-time markdown-to-PDF conversion with customizable styling options through the Gen-PDF API.",
+  "type": "module",
+  "module": "./src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gen-pdf/gen-pdf-mcp-server.git"
+  },
+  "bin": {
+    "gen-pdf-mcp-server": "./.smithery/index.cjs"
+  },
+  "files": [
+    ".smithery"
+  ],
+  "keywords": [
+    "mcp",
+    "pdf generation",
+    "model context protocol",
+    "gen-pdf",
+    "markdown",
+    "pdf",
+    "typst",
+    "claude",
+    "ai",
+    "document generation",
+    "markdown to pdf"
+  ],
+  "author": "Gen-PDF Team",
+  "scripts": {
+    "build": "npm run build:shttp",
+    "build:stdio": "npx @smithery/cli@latest build src/index.ts --transport stdio && echo '#!/usr/bin/env node' | cat - .smithery/index.cjs > temp && mv temp .smithery/index.cjs && chmod +x .smithery/index.cjs",
+    "build:shttp": "npx @smithery/cli@latest build src/index.ts --transport shttp",
+    "prepare": "npm run build:stdio",
+    "watch": "tsc --watch",
+    "dev": "pnpx @smithery/cli@latest dev",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "prepublishOnly": "npm run build:stdio"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "axios": "^1.7.8",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

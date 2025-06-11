@@ -1,0 +1,8 @@
+{
+  "name": "gen-pdf",
+  "command": "npx",
+  "args": ["-y", "gen-pdf-mcp-server"],
+  "env": {
+    "GEN_PDF_API_KEY": "your-gen-pdf-api-key-here"
+  }
+}
