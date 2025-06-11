@@ -60,7 +60,7 @@ export function generate_pdf(
           headers: {
             accept: "application/json",
             "content-type": "application/json",
-            Authorization: `Bearer ${process.env.GEN_PDF_API_KEY || ""}`,
+            Authorization: `Bearer ${config?.genPdfApiKey || ""}`,
           },
         });
 
