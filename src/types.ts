@@ -1,8 +1,13 @@
 // Gen-PDF API Types
 export interface GenPdfRequest {
   document: string;
-  title: string;
-  pageNumbering: boolean;
+  title?: string;
+  subtitle?: string;
+  authors?: string[];
+  pageMargin?: "small" | "medium" | "large";
+  cover?: boolean;
+  toc?: boolean;
+  enablePageNumbering?: boolean;
 }
 
 export interface GenPdfResponse {

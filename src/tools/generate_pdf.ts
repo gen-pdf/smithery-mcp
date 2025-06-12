@@ -23,26 +23,53 @@ export function generate_pdf(
       markdownDocument: z
         .string()
         .describe("Markdown content to convert to PDF"),
-      documentTitle: z.string().describe("Title for the PDF document"),
-      documentSubtitle: z
-        .string()
-        .optional()
-        .describe("Subtitle for the PDF document"),
+      title: z.string().describe("Title for the PDF document"),
+      subtitle: z.string().optional().describe("Subtitle for the PDF document"),
       enablePageNumbering: z
         .boolean()
         .optional()
-        .describe("Enable page numbering (default: false)"),
+        .describe("Enable page numbering")
+        .default(true),
       darkMode: z
         .boolean()
         .optional()
-        .describe("Enable dark theme for the document (default: false)"),
-      pageMargin: z.string().optional().describe("Page margins (default: 2cm)"),
+        .describe("Enable dark theme for the document")
+        .default(false),
+      pageMargin: z
+        .enum(["small", "medium", "large"])
+        .optional()
+        .describe("Page margins")
+        .default("large"),
+      cover: z
+        .boolean()
+        .optional()
+        .describe(
+          "Add a cover page to the PDF document that includes the title and subtitle date and a cover image"
+        )
+        .default(false),
+      toc: z
+        .boolean()
+        .optional()
+        .describe(
+          "Add a table of contents to the PDF document at the beginning of the document. You may want to add it if the document is long and you want to be able to navigate through it easily."
+        )
+        .default(false),
+      authors: z
+        .string()
+        .array()
+        .optional()
+        .describe(
+          "Author of the document. They will be mention on the cover page, therefore this options is not needed if you do not use the cover page."
+        ),
     },
     async ({
       markdownDocument,
-      documentTitle,
-      documentSubtitle,
+      title,
+      subtitle,
       enablePageNumbering,
+      cover,
+      toc,
+      authors,
       darkMode,
       pageMargin,
     }) => {
@@ -51,7 +78,7 @@ export function generate_pdf(
         .substring(2, 7)}`;
       const logger = createRequestLogger(requestId, "generate_pdf");
 
-      logger.start(`Document: "${documentTitle}"`);
+      logger.start(`Document: "${title}"`);
 
       try {
         // Create a fresh axios instance for each request
@@ -66,8 +93,13 @@ export function generate_pdf(
 
         const pdfRequest: GenPdfRequest = {
           document: markdownDocument,
-          title: documentTitle,
-          pageNumbering: enablePageNumbering ?? false,
+          title: title,
+          subtitle: subtitle,
+          cover: cover,
+          enablePageNumbering: enablePageNumbering ?? false,
+          toc: toc,
+          authors: authors,
+          pageMargin: pageMargin,
         };
 
         logger.log("Sending request to Gen-PDF API for PDF generation");
