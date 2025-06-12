@@ -103,7 +103,7 @@ export function generate_pdf(
           content: [
             {
               type: "text" as const,
-              text: `✅ PDF generated successfully! 🔗 **Download Link**: ${response.data.url}`,
+              text: `✅ PDF generated successfully! 🔗 **Download Link**: ${response.data.url}. Give this link to the user in order for him to be able to download the PDF.`,
             },
           ],
         };
